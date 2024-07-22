@@ -11,16 +11,23 @@ document.addEventListener('DOMContentLoaded', () => {
 //Clases
 class Presupuesto{
     constructor(presupuesto){
-        this.presupuesto = Number(presupuesto);
-        this.restante = Number(presupuesto);
+        this.presupuesto = Number(presupuesto);//monto total
+        this.restante = Number(presupuesto);//monto que disminuye segun la cantidad ingresada
         this.gastos = []; //acumular los gastos
     }
 
     nuevoGasto(gasto){
         //referencia al gasto
         this.gastos = [...this.gastos,gasto];
-        console.log(this.gastos);
+        this.calcularRestante();
     }
+
+    calcularRestante(){
+        //Reduce -> Sumar los gastos
+        const gastado = this.gastos.reduce( (total,gasto) => total += gasto.cantidad, 0  )
+        this.restante = this.presupuesto - gastado;
+    }
+
 }
 
 class Ui{
@@ -89,6 +96,33 @@ class Ui{
             gastosListado.removeChild(gastosListado.firstChild);
         }
     }
+
+    //Para mostrar el monto actualizado de restante
+    actualizarRestante(restante){
+        document.querySelector('#restante').textContent = restante;
+    }
+
+    comprobarPresupuesto(presupuestoObj){
+        const {presupuesto,restante} = presupuestoObj;
+        const restantediv = document.querySelector('.restante')
+
+        //Comprobar 25% 
+        if( (presupuesto / 4) > restante){
+            restantediv.classList.remove('alert-success', 'alert-warning');
+            restantediv.classList.add('alert-danger');
+            //verificar si es la mitad -> 50%
+        }else if ( (presupuesto/2) > restante){
+            restantediv.classList.remove('alert-success')
+            restantediv.classList.add('alert-warning')
+        }
+
+        //Si el total es menor a 0
+        if(restante<=0){
+            ui.mostrarMensaje('El presupuesto se ha agotado', 'error');
+            //Desabilitar el boton agregar
+            form.querySelector('button[type="submit"]').disabled = true;
+        }
+    }
 }
 
 //Instancias
@@ -124,14 +158,14 @@ const agregarGasto = (e) => {
         return;
     }
 
-    //Crear un objeto con el gasto
+    //Crear un objeto con el gasto -> une nombre cant y id al gasto
     const gasto = {
         nombre,
         cantidad,
         id: Date.now()
     }
     
-    //añade un nuevo gasto
+    //crea los nuevos gastos del objeto creado anteriormente
     presupuesto.nuevoGasto(gasto);
 
     //Mensaje correcto
@@ -139,8 +173,14 @@ const agregarGasto = (e) => {
 
     //Imprimir los gastos
     //--Extraer los datos del presupuesto
-    const {gastos} = presupuesto;
+    const {gastos, restante} = presupuesto;
     ui.agregarGastoListado(gastos)
+
+    //Actualizar restante
+    ui.actualizarRestante(restante);
+
+    //Actualizar color de restante
+    ui.comprobarPresupuesto(presupuesto);
 
     //reinicia el formulario
     form.reset();
