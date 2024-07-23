@@ -28,6 +28,14 @@ class Presupuesto{
         this.restante = this.presupuesto - gastado;
     }
 
+    eliminarGasto(id){
+        //Una vez eliminado el gasto
+        this.gastos = this.gastos.filter(gasto => gasto.id !== id);
+
+        //Llamamos el restante
+        this.calcularRestante();
+    }
+
 }
 
 class Ui{
@@ -61,7 +69,7 @@ class Ui{
         }, 3000);
     }
 
-    agregarGastoListado(gastos){
+    mostrarGatos(gastos){
         this.limpiarHtml(); //Elimina html previo
         
         //Iterar sobre el Objeto gastos
@@ -82,6 +90,12 @@ class Ui{
             //Boton para borrar el gasto
             const boton = document.createElement('button');
             boton.textContent = 'X';
+
+            //para borrar cuando se da click
+            boton.onclick = () => {
+                eliminarGasto(id);
+            }
+
             boton.classList.add('btn','btn-danger', 'borrar-gasto');
             newgasto.appendChild(boton);
 
@@ -114,6 +128,9 @@ class Ui{
         }else if ( (presupuesto/2) > restante){
             restantediv.classList.remove('alert-success')
             restantediv.classList.add('alert-warning')
+        }else{
+            restantediv.classList.remove('alert-danger','alert-warning')
+            restantediv.classList.add('alert-success')
         }
 
         //Si el total es menor a 0
@@ -174,7 +191,7 @@ const agregarGasto = (e) => {
     //Imprimir los gastos
     //--Extraer los datos del presupuesto
     const {gastos, restante} = presupuesto;
-    ui.agregarGastoListado(gastos)
+    ui.mostrarGatos(gastos)
 
     //Actualizar restante
     ui.actualizarRestante(restante);
@@ -184,4 +201,19 @@ const agregarGasto = (e) => {
 
     //reinicia el formulario
     form.reset();
+}
+
+function eliminarGasto(id){
+    //Eliminar del objeto - clase
+    presupuesto.eliminarGasto(id);
+
+    //Elimina los gastos del html
+    const {gastos,restante} = presupuesto;
+    ui.mostrarGatos(gastos);
+
+    //Actualizar restante
+    ui.actualizarRestante(restante);
+
+    //Actualizar color de restante
+    ui.comprobarPresupuesto(presupuesto);
 }
