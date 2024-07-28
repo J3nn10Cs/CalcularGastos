@@ -27,3 +27,6 @@ class Presupuesto{
     }
 
 }
+
+export default Presupuesto
+

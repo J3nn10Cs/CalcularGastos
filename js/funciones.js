@@ -1,5 +1,12 @@
+//Importaciones
+import Presupuesto from "./class/Presupuesto.js";
+import Ui from "./class/Ui.js";
+
+export let presupuesto
+//Instancias
+export const ui = new Ui();
 //Funciones
-const promts = () => {
+export const promts = () => {
     let question = prompt('¿Cual es el presupuesto?');
     if(question === ' ' || question === null|| isNaN(question) || question<=0){
         window.location.reload();

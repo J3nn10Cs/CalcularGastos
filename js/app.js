@@ -1,3 +1,6 @@
+//Importaciones
+import Presupuesto from "./class/Presupuesto.js";
+import Ui from "./class/Ui.js";
 //Variables y selectores
 const gastosListado = document.querySelector('#gastos ul');
 const form = document.querySelector('#agregar-gasto');
@@ -8,8 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     form.addEventListener('submit', agregarGasto)
 })
 
-//Instancias
-const ui = new Ui();
-let presupuesto;
+
+
 
 
