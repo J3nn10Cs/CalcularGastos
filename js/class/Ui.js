@@ -1,3 +1,5 @@
+import { form,gastosListado } from "../funciones.js";
+import { eliminarGasto } from "../funciones.js";
 class Ui{
     insertPresupuesto(cant){
         const total = document.querySelector('#total');

@@ -1,10 +1,5 @@
-//Importaciones
-import Presupuesto from "./class/Presupuesto.js";
-import Ui from "./class/Ui.js";
-//Variables y selectores
-const gastosListado = document.querySelector('#gastos ul');
-const form = document.querySelector('#agregar-gasto');
-
+import { promts,form } from "./funciones.js";
+import { agregarGasto } from "./funciones.js";
 //Eventos
 document.addEventListener('DOMContentLoaded', () => {
     promts();

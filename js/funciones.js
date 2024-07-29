@@ -5,8 +5,11 @@ import Ui from "./class/Ui.js";
 export let presupuesto
 //Instancias
 export const ui = new Ui();
+//Variables y selectores
+export const gastosListado = document.querySelector('#gastos ul');
+export const form = document.querySelector('#agregar-gasto');
 //Funciones
-export const promts = () => {
+export function promts (){
     let question = prompt('¿Cual es el presupuesto?');
     if(question === ' ' || question === null|| isNaN(question) || question<=0){
         window.location.reload();
@@ -19,7 +22,7 @@ export const promts = () => {
 }
 
 //Agregar gastos
-const agregarGasto = (e) => {
+export const agregarGasto = (e) => {
     e.preventDefault();
     //Leer datos
     const nombre = document.querySelector('#gasto').value;
@@ -61,7 +64,7 @@ const agregarGasto = (e) => {
     form.reset();
 }
 
-function eliminarGasto(id){
+export function eliminarGasto(id){
     //Eliminar del objeto - clase
     presupuesto.eliminarGasto(id);
 
